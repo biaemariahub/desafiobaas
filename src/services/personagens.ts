@@ -109,6 +109,7 @@ export async function equiparItem(
 //
 // CORREÇÃO: use personagem.id ao invés de String(indice) no deleteDoc.
 // ---------------------------------------------------------------------------
+// ajustado bug 7 novamente
 export async function deletarPersonagem(
   personagem: Personagem,
   indice: number
