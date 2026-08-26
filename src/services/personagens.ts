@@ -35,7 +35,7 @@ export async function listarPersonagens(_uid: string): Promise<Personagem[]> {
   const snap = await getDocs(q);
   return snap.docs.map((d) => ({ id: d.id, ...d.data() } as Personagem));
 }
-
+// ajuste do bug 4
 // ---------------------------------------------------------------------------
 // CRIAR — BUG 05 🐛
 // ---------------------------------------------------------------------------
