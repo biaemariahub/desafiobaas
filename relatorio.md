@@ -1,6 +1,6 @@
 ## Relatório de Correção de Bugs
 
-## BUG #01 — Erro de login sem mensagem
+## BUG #1 — Erro de Login Engolido
 
 ### O que estava acontecendo
 Quando o usuário informava um e-mail inexistente ou uma senha incorreta, o login falhava, mas nenhuma mensagem era exibida na tela. A interface não informava ao usuário o motivo da falha.
@@ -25,7 +25,7 @@ Assim, a falha de autenticação é tratada e apresentada ao usuário.
 ### Screenshot ou resultado
 [Insira aqui as prints do comportamento antes e depois da correção.]
 
-## BUG #02 — Proteção das rotas privadas invertida
+## BUG #2 — A Rota Protegida não Protege
 
 ### O que estava acontecendo
 Usuários não autenticados conseguiam acessar páginas privadas, como `/dashboard`, `/criar-personagem` e `/personagem`, sem serem redirecionados para a página de login.
@@ -47,7 +47,7 @@ Com isso, visitantes sem sessão são enviados para `/login`, enquanto usuários
 ### Screenshot ou resultado
 [Insira aqui as prints do acesso sem login antes e depois da correção.]
 
-## BUG #03 — Validação da confirmação de senha
+## BUG #3 — Confirmação de Senha Quebrada
 
 ### O que estava acontecendo
 O formulário de cadastro não validava corretamente o campo de confirmação de senha. Senhas diferentes podiam ser aceitas, pois a comparação era feita com o campo errado.
