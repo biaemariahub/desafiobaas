@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import BugBanner from "@/components/BugBanner";
-
+// ajuste do bug 1
 // ---------------------------------------------------------------------------
 // 🐛 BUG 01 — ERRO DE LOGIN ENGOLIDO
 // O bloco catch está vazio: quando o usuário erra a senha ou o e-mail não
