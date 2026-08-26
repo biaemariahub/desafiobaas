@@ -54,15 +54,15 @@ export async function criarPersonagem(
   classe: Classe
 ): Promise<string> {
   // 🐛 BUG 05 — nome de coleção errado: "personagem" ao invés de "personagens"
-  const ref = await addDoc(collection(db, "personagem"), {
-    nome,
-    classe,
-    nivel: 1,
-    xp: 0,
-    userId: uid,
-    criadoEm: serverTimestamp(),
-  });
-  return ref.id;
+const ref = await addDoc(collection(db, "personagens"), {
+  nome,
+  classe,
+  nivel: 1,
+  xp: 0,
+  userId: uid,
+  criadoEm: serverTimestamp(),
+});
+return ref.id;
 }
 
 // ---------------------------------------------------------------------------
