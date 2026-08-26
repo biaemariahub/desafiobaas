@@ -1,8 +1,49 @@
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
+import { db } from "./firebaseConfig"; // Ajuste o caminho para o seu arquivo de configuração do Firebase
+import { collection, addDoc, doc, getDoc, serverTimestamp } from "firebase/firestore";
 
-    // ---------------------------------------------------------------------------
+// Interface que define a estrutura de um Personagem
+export interface Personagem {
+  id: string;
+  nome: string;
+  classe: string;
+  nivel: number;
+  xp: number;
+  userId: string;
+  criadoEm: any;
+}
+
+// ---------------------------------------------------------------------------
+// CRIAR UM PERSONAGEM
+// ---------------------------------------------------------------------------
+export async function criarPersonagem(nome: string, classe: string, uid: string): Promise<string> {
+  // 🐛 BUG 05 CORRIGIDO: Nome da coleção alterado para "personagens" (plural)
+  const ref = await addDoc(collection(db, "personagens"), {
+    nome,
+    classe,
+    nivel: 1,
+    xp: 0,
+    userId: uid,
+    criadoEm: serverTimestamp(),
+  });
+  
+  return ref.id;
+}
+
+// ---------------------------------------------------------------------------
+// BUSCAR UM PERSONAGEM
+// ---------------------------------------------------------------------------
+export async function buscarPersonagem(id: string): Promise<Personagem | null> {
+  // Busca na coleção correta "personagens"
+  const snap = await getDoc(doc(db, "personagens", id));
+  
+  if (!snap.exists()) return null;
+  
+  return { 
+    id: snap.id, 
+    ...snap.data() 
+  } as Personagem;
+}
+---------------------------------------------------------------------------
     // 🐛 BUG 08 — SECURITY RULES TOTALMENTE ABERTAS
     // ---------------------------------------------------------------------------
     // O que está acontecendo: QUALQUER pessoa no mundo pode ler, criar, editar
