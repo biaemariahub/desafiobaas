@@ -125,3 +125,6 @@ export async function adicionarXP(personagemId: string, quantidade: number) {
     xp: quantidade,
   });
 }
+
+
+//ajustado o bug 6
