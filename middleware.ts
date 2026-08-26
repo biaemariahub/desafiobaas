@@ -2,38 +2,49 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 // ---------------------------------------------------------------------------
-// MIDDLEWARE DE AUTENTICAÇÃO — BUG 02 🐛
+// MIDDLEWARE DE AUTENTICAÇÃO — BUG 02 CORRIGIDO
 // ---------------------------------------------------------------------------
-// O que está acontecendo: usuários que NÃO estão logados conseguem acessar
-// o dashboard e criar personagens normalmente. A proteção de rotas não funciona!
+
+// O middleware protege as rotas:
+// - /dashboard
+// - /criar-personagem
+// - /personagem
 //
-// Por quê? A condição abaixo está INVERTIDA. O código lê:
-//   "SE o usuário TEM sessão → redireciona para /login"
-// Mas deveria ser:
-//   "SE o usuário NÃO TEM sessão → redireciona para /login"
-//
-// CORREÇÃO: troque if (token) por if (!token) — o ponto de exclamação
-// faz toda a diferença aqui.
+// Se o usuário NÃO estiver logado, será redirecionado para /login.
+// Se estiver logado, poderá acessar normalmente.
 // ---------------------------------------------------------------------------
 
 export function middleware(request: NextRequest) {
+  // Verifica se existe o cookie de sessão
   const token = request.cookies.get("__session")?.value;
 
-  const rotasProtegidas = ["/dashboard", "/criar-personagem", "/personagem"];
+  // Lista de rotas que precisam de autenticação
+  const rotasProtegidas = [
+    "/dashboard",
+    "/criar-personagem",
+    "/personagem",
+  ];
+
+  // Verifica se o usuário está tentando acessar uma rota protegida
   const estaNaRotaProtegida = rotasProtegidas.some((r) =>
     request.nextUrl.pathname.startsWith(r)
   );
 
+  // Se estiver em uma rota protegida
   if (estaNaRotaProtegida) {
-    // 🐛 BUG 02 — condição INVERTIDA: redireciona quem TEM sessão
-    if (token) {
-      return NextResponse.redirect(new URL("/login", request.url));
+    // Se NÃO possuir sessão, redireciona para o login
+    if (!token) {
+      return NextResponse.redirect(
+        new URL("/login", request.url)
+      );
     }
   }
 
+  // Permite continuar normalmente
   return NextResponse.next();
 }
 
+// Define quais rotas serão verificadas pelo middleware
 export const config = {
   matcher: [
     "/dashboard/:path*",
