@@ -56,15 +56,15 @@ export async function buscarPersonagem(id: string): Promise<Personagem | null> {
     //
     // CORREÇÃO: substitua as regras abaixo por estas regras seguras:
     //
-    // match /personagens/{personagemId} {
-    //   allow read: if request.auth != null &&
-    //               request.auth.uid == resource.data.userId;
-    //   allow create: if request.auth != null &&
-    //                 request.auth.uid == request.resource.data.userId;
-    //   allow update, delete: if request.auth != null &&
-    //                         request.auth.uid == resource.data.userId;
-    // }
-    //
+     match /personagens/{personagemId} {
+      allow read: if request.auth != null &&
+                  request.auth.uid == resource.data.userId;
+      allow create: if request.auth != null &&
+                    request.auth.uid == request.resource.data.userId;
+       allow update, delete: if request.auth != null &&
+                            request.auth.uid == resource.data.userId;
+     }
+    
     // Com essas regras: usuário só pode ler/editar/deletar documentos onde
     // resource.data.userId == uid do usuário logado (request.auth.uid).
     // ---------------------------------------------------------------------------
