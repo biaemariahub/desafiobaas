@@ -98,34 +98,30 @@ export async function equiparItem(
 }
 
 // ---------------------------------------------------------------------------
-// DELETAR — BUG 07 🐛
 // ---------------------------------------------------------------------------
-// O que está acontecendo: ao tentar deletar um personagem específico,
-// o app deleta o ERRADO ou gera um erro de "documento não encontrado".
-//
-// Por quê? A função recebe o personagem inteiro, mas usa o parâmetro
-// "indice" (a posição na lista: 0, 1, 2...) como se fosse o ID do documento
-// no Firestore. O ID real é uma string aleatória gerada pelo Firebase.
-//
-// CORREÇÃO: use personagem.id ao invés de String(indice) no deleteDoc.
+// DELETAR PERSONAGEM — BUG 07 CORRIGIDO
 // ---------------------------------------------------------------------------
-// ajustado bug 7 novamente
 export async function deletarPersonagem(
   personagem: Personagem,
   indice: number
 ): Promise<void> {
-  // 🐛 BUG 07 — usa o índice da lista (0, 1, 2) como ID do documento
-  await deleteDoc(doc(db, "personagens", String(indice)));
+  // O índice NÃO é o ID do documento no Firestore.
+  // Usamos o ID real do personagem.
+  await deleteDoc(doc(db, "personagens", personagem.id));
 }
 
 // ---------------------------------------------------------------------------
-// ADICIONAR XP (sem bug — exemplo de increment atômico)
+// ADICIONAR XP
 // ---------------------------------------------------------------------------
-export async function adicionarXP(personagemId: string, quantidade: number) {
+export async function adicionarXP(
+  personagemId: string,
+  quantidade: number
+): Promise<void> {
   await updateDoc(doc(db, "personagens", personagemId), {
     xp: quantidade,
   });
 }
+
 
 
 //ajustado o bug 6
